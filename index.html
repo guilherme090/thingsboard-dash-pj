@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ThingsBoard API - Painel</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <input type="email" id="auth-email" placeholder="E-mail" value="">
+        <input type="button" id="auth-button" value="Autenticar"> <br>
+        <input type="password" id="auth-password" placeholder="Senha" value="">
+        <label type="information" id="info">Conecte-se ao ThingsBoard.</label> 
+
+        <div class="chart" id="customer-chart">
+            <textNode class="customer">Customers:</textNode>
+        </div>
+
+        <table border="1" class="chart" id="device-chart">
+            <caption>Dispositivos e Usuários</caption>
+            <textNode class="device"></textNode>
+        </table>
+
+        <script src="js/generate-entities/customers.js"></script> 
+        <script src="js/generate-entities/devices.js"></script> 
+        <script src="js/file.js"></script> 
+
+        <!-- <table border="1">
+            <tr>
+                <td>Teste11</td>
+                <td>Teste12</td>
+            </tr>
+            <tr>
+                <td>Teste21</td>
+                <td><input type="radio" name="radQ3" value="7" id="q7" 
+                    title="strongly agree" /></td>
+            </tr>
+        </table> -->
+    </body>
+</html>
