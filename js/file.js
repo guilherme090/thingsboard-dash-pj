@@ -58,8 +58,8 @@ loginButton.onclick = async function () {
         console.log('token: ' + token);
         console.log('refreshToken: ' + refreshToken);
     
-        getCustomers(token, customerChart);
-        getDevices(token, deviceChart);
+        await getCustomers(token, customerChart);
+        await getDevices(token, deviceChart);
     }catch(error){
         if(error.name === 'AbortError'){
             console.log('Não foi possível conectar-se à ThingsBoard API.');
