@@ -1,42 +1,10 @@
-const customersUrl = 'http://187.111.29.214:48080/api/customers?pageSize=100&page=0';
+import { urlList, request } from '../api.js'; 
 
-const getCustomers = async function (token, customerChart) {
+export const customerChart = document.querySelector('#customer-chart');
 
-    let response = await fetch(customersUrl, {
-        method: 'GET',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Authorization': 'Bearer ' + token
-        }
-    });
-
-    let customerList = await response.json();
+export async function getCustomers(token, customerChart) {
+    let customerList = await request(urlList.customers, token);
     let customerListArray = customerList.data;
-
-    console.log(customerListArray);
-
-    // // get logged customer id
-    // let loggedCustomerId = null;
-    // let foundparent = false;
-
-    // for(let customer of customerListArray){
-    //     loggedCustomerId = null;
-    //     if(customer.ownerId){
-    //         let parentId = customer.ownerId.id;
-    //         foundparent = false;
-    //         for(let possibleParentId of customerListArray){
-    //             if(possibleParentId.id.id == parentId){
-    //                 foundparent = true;
-    //                 break;
-    //             }
-    //         }
-    //         if(foundparent === false){
-    //             loggedCustomerId = parentId;
-    //         }
-    //         console.log(loggedCustomerId);
-    //     }
-    // }
 
     while(customerChart.firstChild){
         customerChart.removeChild(customerChart.lastChild);

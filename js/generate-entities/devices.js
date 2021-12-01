@@ -1,69 +1,31 @@
-const devicesUrl = 'http://187.111.29.214:48080/api/user/devices?pageSize=100&page=0';
-let userList = [];
+import { urlList, request } from '../api.js'; 
+import { userList, loadUsers } from './users.js'
+
 let allRelationsList = [];
 let deviceListArray = [];
-let tableArray = [];
+export let tableArray = [];
 
-const request = function(url, token){
-    return fetch(url, {
-        method: 'GET',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Authorization': 'Bearer ' + token
-        }
-    });
-}
+export const deviceChart = document.querySelector('#device-chart');
 
-const getUsers = async function (token){
-    const customerUsersUrl = `http://187.111.29.214:48080/api/customer/users?pageSize=50&page=0`;
-    let customerUsersResponse = await request(customerUsersUrl, token);
-    let customerUsersList = await customerUsersResponse.json();
-   
-    userList = [];
+export async function getDevices (token) {
+    await loadUsers(token);
 
-    customerUsersList.data.forEach(element => {
-        userList.push({
-            id: element.id.id,
-            name: `${element.firstName || ''} ${element.lastName || ''}` 
-        });
-        console.log(element);
-    });
-}
-
-const getDevices = async function (token, deviceChart) {
-    await getUsers(token);
-    console.log(`E-mail: ${emailInput.value}`);
-    console.log(`Senha: ${passwordInput.value}`);
-
-    let response = await request(devicesUrl, token);
-
-    let deviceList = await response.json();
+    let deviceList = await request(urlList.devices, token);
     deviceListArray = deviceList.data;
 
     deviceListArray.forEach(async (device,index) => {
-
-        let relationsUrl = `http://187.111.29.214:48080/api/relations?toId=${device.id.id}&toType=DEVICE&relationType=Usa`;
-        let relationsResponse = await request(relationsUrl, token);
-        let relationsList = await relationsResponse.json();
+        let relationsList = await request(urlList.generateRelationsUrl(device), token);
 
         // for each found relation, incorporate relation data to the allRelationsList. They will have to be removed afterwards
         relationsList.forEach(relation => {allRelationsList.push(relation)});
-
-        console.log(relationsList);
-
         let relatedUserId = '';
         let userName = '';
         let userId = '';
         if(relationsList.length > 0){
             relatedUserId = relationsList[0].from.id;
-
-            let userUrl = `http://187.111.29.214:48080/api/user/${relatedUserId}`
-            let userResponse = await request(userUrl, token);
-            let userItem = await userResponse.json();
+            let userItem = await request(urlList.generateUsersUrl(relatedUserId), token);
             userName = userItem.firstName + " " + userItem.lastName;
             userId = userItem.id.id;
-            console.log(userItem.firstName + " " + userItem.lastName);
         }      
 
         tableArray.push({
@@ -72,20 +34,16 @@ const getDevices = async function (token, deviceChart) {
             userName: userName,
             userId: userId
         });
-        // console.log(newUserDiv.value)
-        // console.log(allRelationsList);
     });
-
     // TODO: Delete all relations. Set new ones.
     // transform everything into an object before drawing the table (including even the options box).
     // create a method for drawing the table.
     // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_select_selectedindex
-
-    createTable(deviceChart);
+    
 };
 
-function createTable(deviceChart){
-    console.log('tableArray');
+export function createTable(){
+    console.log('tableArray from within function');
     console.log(tableArray);
     while(deviceChart.firstChild){
         deviceChart.removeChild(deviceChart.lastChild);

@@ -3,63 +3,28 @@ const passwordInput = document.querySelector('#auth-password');
 const loginButton = document.querySelector('#auth-button');
 const infoLabel = document.querySelector('#info');
 
-const customerChart = document.querySelector('#customer-chart');
-const deviceChart = document.querySelector('#device-chart');
-
-const url = 'http://187.111.29.214:48080/api/auth/login';
-let token = '';
-let refreshToken = '';
-
-async function fetchWithTimeout(resource, options = {}){
-    const { timeout = 8000 } = options;
-
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-
-    const response = await fetch(resource, {
-        ...options,
-        signal: controller.signal
-    });
-
-    clearTimeout(id);
-
-    return response;
-}
+import { login, token, refreshToken } from './api.js';
+import { getCustomers, customerChart } from './generate-entities/customers.js';
+import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
 
 loginButton.onclick = async function () {
     infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
-    try{
-        let response = await fetchWithTimeout(url, {
-            timeout: 6000,
-            method: 'POST',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(
-                {
-                    username: emailInput.value,
-                    password: passwordInput.value
-                }
-            )
-        });
-    
-        if(response.status >= 400 && response.status < 600){
-            throw new Error('Não foi possível realizar o login no ThingsBoard.');
-        }
-
-        infoLabel.innerHTML = 'Conectado ao ThingsBoard.';
-
-        let json = await response.json();
-        token = json.token;
-        refreshToken = json.refreshToken;
-    
-        console.log('JSON: ' + json);
+    try{    
+        await login(emailInput, passwordInput, infoLabel);
         console.log('token: ' + token);
         console.log('refreshToken: ' + refreshToken);
     
         await getCustomers(token, customerChart);
-        await getDevices(token, deviceChart);
+        await getDevices(token);
+        
+        console.log('tableArray from outside function');
+        console.log(tableArray);
+        
+        /*
+            This function is not waiting for the previous ones to conclude before it starts, despite the await assignments
+        */
+        createTable();
+        
     }catch(error){
         if(error.name === 'AbortError'){
             console.log('Não foi possível conectar-se à ThingsBoard API.');
@@ -68,7 +33,6 @@ loginButton.onclick = async function () {
         infoLabel.innerHTML = 'A conexão com o ThingsBoard falhou. Tente novamente.';
     }   
 }
-
 
 // curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"username":"tenant@thingsboard.org", "password":"tenant"}' 'http://187.111.29.214:48080/api/auth/login'
 
