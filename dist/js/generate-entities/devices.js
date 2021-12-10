@@ -73,16 +73,19 @@ export function createTable() {
     deviceChart.appendChild(titleRow);
     let caption = deviceChart.createCaption();
     caption.innerHTML = 'Dispositivos e Usuários';
-    tableArray.forEach(tableItem => {
+    tableArray.forEach(function (tableItem) {
         // definition of row (contains device and assigned user)
         let tableRow = document.createElement('tr');
+        tableRow.setAttribute('class', 'table-light');
         // device column
         let deviceDiv = document.createElement('td');
+        deviceDiv.setAttribute('class', 'table-light');
         let deviceTxtNode = document.createTextNode(tableItem.deviceName);
         deviceDiv.setAttribute('class', 'device');
         deviceDiv.appendChild(deviceTxtNode);
         // user column
         let userDiv = document.createElement('td');
+        userDiv.setAttribute('class', 'table-light');
         let userTxtNode = document.createTextNode(tableItem.userName);
         userDiv.setAttribute('class', 'device');
         userDiv.appendChild(userTxtNode);

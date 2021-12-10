@@ -18,6 +18,7 @@ export function getCustomers(token, customerChart) {
         }
         customerListArray.forEach(function (customer, index) {
             let div = document.createElement('div');
+            div.setAttribute('class', 'row');
             let txtNode = document.createTextNode(customerList.data[index].name);
             div.setAttribute('class', 'customer');
             div.appendChild(txtNode);

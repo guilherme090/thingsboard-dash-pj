@@ -13,7 +13,7 @@ const loginForm = document.querySelector('#login-form');
 const infoLabel = document.querySelector('#info');
 import { login, token, refreshToken } from './api.js';
 import { getCustomers, customerChart } from './generate-entities/customers.js';
-import { getDevices, createTable, tableArray } from './generate-entities/devices.js';
+import { getDevices, createTable } from './generate-entities/devices.js';
 loginForm.onsubmit = function (event) {
     return __awaiter(this, void 0, void 0, function* () {
         event.preventDefault(); //otherwise the form is going to clear itself before submitting
@@ -24,8 +24,7 @@ loginForm.onsubmit = function (event) {
             console.log('refreshToken: ' + refreshToken);
             yield getCustomers(token, customerChart);
             yield getDevices(token);
-            console.log('tableArray from outside function');
-            console.log(tableArray);
+            // console.log(tableArray);
             createTable();
         }
         catch (error) {

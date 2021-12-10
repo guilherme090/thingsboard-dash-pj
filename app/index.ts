@@ -18,8 +18,7 @@ loginForm.onsubmit = async function (event: Event) {
         await getCustomers(token, customerChart);
         await getDevices(token);
         
-        console.log('tableArray from outside function');
-        console.log(tableArray);
+        // console.log(tableArray);
         
         createTable();
         
