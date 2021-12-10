@@ -1,13 +1,14 @@
 const emailInput = document.querySelector('#auth-email');
 const passwordInput = document.querySelector('#auth-password');
-const loginButton = document.querySelector('#auth-button');
+const loginForm = document.querySelector('#login-form');
 const infoLabel = document.querySelector('#info');
 
 import { login, token, refreshToken } from './api.js';
 import { getCustomers, customerChart } from './generate-entities/customers.js';
 import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
 
-loginButton.onclick = async function () {
+loginForm.onsubmit = async function (event) {
+    event.preventDefault(); //otherwise the form is going to clear itself before submitting
     infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
     try{    
         await login(emailInput, passwordInput, infoLabel);
@@ -30,6 +31,7 @@ loginButton.onclick = async function () {
         infoLabel.innerHTML = 'A conexão com o ThingsBoard falhou. Tente novamente.';
     }   
 }
+
 
 // curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"username":"tenant@thingsboard.org", "password":"tenant"}' 'http://187.111.29.214:48080/api/auth/login'
 
