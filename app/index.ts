@@ -3,7 +3,7 @@ const passwordInput: HTMLInputElement = document.querySelector('#auth-password')
 const loginForm: any = document.querySelector('#login-form');
 const infoLabel: HTMLInputElement = document.querySelector('#info');
 
-import { login, token, refreshToken } from './api.js';
+import { login, token, refreshToken } from './api.js'
 import { getCustomers, customerChart } from './generate-entities/customers.js';
 import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
 
