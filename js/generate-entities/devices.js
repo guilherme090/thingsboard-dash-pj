@@ -1,5 +1,5 @@
 import { urlList, request } from '../api.js'; 
-import { userList, loadUsers } from './users.js'
+import { userList, loadUsers } from './users.js';
 
 let allRelationsList = [];
 let deviceListArray = [];
@@ -8,12 +8,21 @@ export let tableArray = [];
 export const deviceChart = document.querySelector('#device-chart');
 
 export async function getDevices (token) {
+    tableArray = [];
+
+    // Erase table to show it is loading...
+    while(deviceChart.firstChild){
+        deviceChart.removeChild(deviceChart.lastChild);
+    }
+    let caption = deviceChart.createCaption();
+    caption.innerHTML = 'Carregando dispositivos...';
+
     await loadUsers(token);
 
     let deviceList = await request(urlList.devices, token);
     deviceListArray = deviceList.data;
 
-    deviceListArray.forEach(async (device,index) => {
+    for(const [index, device] of deviceListArray.entries()){
         let relationsList = await request(urlList.generateRelationsUrl(device), token);
 
         // for each found relation, incorporate relation data to the allRelationsList. They will have to be removed afterwards
@@ -34,7 +43,7 @@ export async function getDevices (token) {
             userName: userName,
             userId: userId
         });
-    });
+    };
     // TODO: Delete all relations. Set new ones.
     // transform everything into an object before drawing the table (including even the options box).
     // create a method for drawing the table.

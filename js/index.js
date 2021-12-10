@@ -20,9 +20,6 @@ loginButton.onclick = async function () {
         console.log('tableArray from outside function');
         console.log(tableArray);
         
-        /*
-            This function is not waiting for the previous ones to conclude before it starts, despite the await assignments
-        */
         createTable();
         
     }catch(error){
