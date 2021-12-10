@@ -1,46 +1,46 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const emailInput = document.querySelector('#auth-email');
-const passwordInput = document.querySelector('#auth-password');
-const loginForm = document.querySelector('#login-form');
-const infoLabel = document.querySelector('#info');
+const emailInput: HTMLInputElement = document.querySelector('#auth-email');
+const passwordInput: HTMLInputElement = document.querySelector('#auth-password');
+const loginForm: any = document.querySelector('#login-form');
+const infoLabel: HTMLInputElement = document.querySelector('#info');
+
 import { login, token, refreshToken } from './api.js';
 import { getCustomers, customerChart } from './generate-entities/customers.js';
-import { getDevices, createTable, tableArray } from './generate-entities/devices.js';
-loginForm.onsubmit = function (event) {
-    return __awaiter(this, void 0, void 0, function* () {
-        event.preventDefault(); //otherwise the form is going to clear itself before submitting
-        infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
-        try {
-            yield login(emailInput, passwordInput, infoLabel);
-            console.log('token: ' + token);
-            console.log('refreshToken: ' + refreshToken);
-            yield getCustomers(token, customerChart);
-            yield getDevices(token);
-            console.log('tableArray from outside function');
-            console.log(tableArray);
-            createTable();
+import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
+
+loginForm.onsubmit = async function (event: Event) {
+    event.preventDefault(); //otherwise the form is going to clear itself before submitting
+    infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
+    try{    
+        await login(emailInput, passwordInput, infoLabel);
+        console.log('token: ' + token);
+        console.log('refreshToken: ' + refreshToken);
+    
+        await getCustomers(token, customerChart);
+        await getDevices(token);
+        
+        console.log('tableArray from outside function');
+        console.log(tableArray);
+        
+        createTable();
+        
+    }catch(error){
+        if(error.name === 'AbortError'){
+            console.log('Não foi possível conectar-se à ThingsBoard API.');
         }
-        catch (error) {
-            if (error.name === 'AbortError') {
-                console.log('Não foi possível conectar-se à ThingsBoard API.');
-            }
-            console.error(error);
-            infoLabel.innerHTML = 'A conexão com o ThingsBoard falhou. Tente novamente.';
-        }
-    });
-};
+        console.error(error);
+        infoLabel.innerHTML = 'A conexão com o ThingsBoard falhou. Tente novamente.';
+    }   
+}
+
+
 // curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"username":"tenant@thingsboard.org", "password":"tenant"}' 'http://187.111.29.214:48080/api/auth/login'
+
 // http://187.111.29.214:48080/swagger-ui.html - acesso ao swagger
+
 // http://187.111.29.214:48080/login 
+
 // {"token":"$YOUR_JWT_TOKEN", "refreshToken":"$YOUR_JWT_REFRESH_TOKEN"}
+
 // const exampleResponse = [
 //     {
 //         "id": {

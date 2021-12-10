@@ -1,0 +1,23 @@
+{
+  "name": "thingsboard_api_painel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guilherme090/thingsboard-dash-pj.git"
+  },
+  "author": "Guilherme Simoes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guilherme090/thingsboard-dash-pj/issues"
+  },
+  "homepage": "https://github.com/guilherme090/thingsboard-dash-pj#readme",
+  "devDependencies": {
+    "typescript": "^4.5.3"
+  }
+}
