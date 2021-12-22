@@ -73,3 +73,4 @@ function fetchWithTimeout(resource, options = {}) {
         return response;
     });
 }
+//# sourceMappingURL=api.js.map

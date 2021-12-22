@@ -16,7 +16,6 @@ export const deviceChart = document.querySelector('#device-chart');
 export function getDevices(token) {
     return __awaiter(this, void 0, void 0, function* () {
         tableArray = [];
-        // Erase table to show it is loading...
         while (deviceChart.firstChild) {
             deviceChart.removeChild(deviceChart.lastChild);
         }
@@ -27,7 +26,6 @@ export function getDevices(token) {
         deviceListArray = deviceList.data;
         for (const [index, device] of deviceListArray.entries()) {
             let relationsList = yield request(urlList.generateRelationsUrl(device), token);
-            // for each found relation, incorporate relation data to the allRelationsList. They will have to be removed afterwards
             relationsList.forEach(function (relation) { allRelationsList.push(relation); });
             let relatedUserId = '';
             let userName = '';
@@ -46,10 +44,6 @@ export function getDevices(token) {
             });
         }
         ;
-        // TODO: Delete all relations. Set new ones.
-        // transform everything into an object before drawing the table (including even the options box).
-        // create a method for drawing the table.
-        // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_select_selectedindex
     });
 }
 ;
@@ -59,7 +53,6 @@ export function createTable() {
     while (deviceChart.firstChild) {
         deviceChart.removeChild(deviceChart.lastChild);
     }
-    // Create table titles (headers):
     let titleRow = document.createElement('tr');
     let titleDevice = document.createElement('td');
     titleDevice.appendChild(document.createTextNode('Dispositivo'));
@@ -74,28 +67,22 @@ export function createTable() {
     let caption = deviceChart.createCaption();
     caption.innerHTML = 'Dispositivos e Usuários';
     tableArray.forEach(function (tableItem) {
-        // definition of row (contains device and assigned user)
         let tableRow = document.createElement('tr');
         tableRow.setAttribute('class', 'table-light');
-        // device column
         let deviceDiv = document.createElement('td');
         deviceDiv.setAttribute('class', 'table-light');
         let deviceTxtNode = document.createTextNode(tableItem.deviceName);
         deviceDiv.setAttribute('class', 'device');
         deviceDiv.appendChild(deviceTxtNode);
-        // user column
         let userDiv = document.createElement('td');
         userDiv.setAttribute('class', 'table-light');
         let userTxtNode = document.createTextNode(tableItem.userName);
         userDiv.setAttribute('class', 'device');
         userDiv.appendChild(userTxtNode);
-        // new user column
-        // fill first position with empty space
         let newUserDiv = document.createElement('select');
         let optionDiv = document.createElement('option');
         optionDiv.innerHTML = '';
         newUserDiv.appendChild(optionDiv);
-        // fill other positions with possible users
         userList.forEach(function (userElement) {
             let optionDiv = document.createElement('option');
             optionDiv.innerHTML = userElement.name;
@@ -108,3 +95,4 @@ export function createTable() {
         deviceChart.appendChild(tableRow);
     });
 }
+//# sourceMappingURL=devices.js.map

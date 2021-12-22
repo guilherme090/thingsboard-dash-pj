@@ -27,3 +27,4 @@ export function getCustomers(token, customerChart) {
     });
 }
 ;
+//# sourceMappingURL=customers.js.map
