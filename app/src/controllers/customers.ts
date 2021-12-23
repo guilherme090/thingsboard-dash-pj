@@ -16,9 +16,11 @@ export class CustomersController {
     public async importData(token: string) {
         let customersList = await request(urlList.customers, token);
         if(customersList.data) {
+            this.messageView.alertClass = 'alert alert-success';
             this.customers.add(customersList.data);
             this.updateView('');
         } else {
+            this.messageView.alertClass = 'alert alert-warning';
             throw Error('Não foi possível obter a lista de clientes.');
         }
     }

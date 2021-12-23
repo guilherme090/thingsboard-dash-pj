@@ -22,10 +22,12 @@ export class CustomersController {
         return __awaiter(this, void 0, void 0, function* () {
             let customersList = yield request(urlList.customers, token);
             if (customersList.data) {
+                this.messageView.alertClass = 'alert alert-success';
                 this.customers.add(customersList.data);
                 this.updateView('');
             }
             else {
+                this.messageView.alertClass = 'alert alert-warning';
                 throw Error('Não foi possível obter a lista de clientes.');
             }
         });

@@ -15,6 +15,7 @@ export class LoginController {
         this.messageView = new MessageView('#message-view');
         this.emailInput = document.querySelector('#auth-email');
         this.passwordInput = document.querySelector('#auth-password');
+        this.messageView.alertClass = 'alert alert-info';
         this.updateView('Faça o login no ThingsBoard.');
     }
     login() {
@@ -24,9 +25,11 @@ export class LoginController {
             }
             catch (error) {
                 console.error(error);
+                this.messageView.alertClass = 'alert alert-warning';
                 this.updateView('Não foi possível conectar-se ao ThingsBoard.');
                 return;
             }
+            this.messageView.alertClass = 'alert alert-success';
             this.updateView('Conectado ao ThingsBoard.');
         });
     }
