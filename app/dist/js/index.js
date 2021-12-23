@@ -11,16 +11,19 @@ const emailInput = document.querySelector('#auth-email');
 const passwordInput = document.querySelector('#auth-password');
 const loginForm = document.querySelector('#login-form');
 const infoLabel = document.querySelector('#info');
-import { login, token, refreshToken } from './api.js';
 import { getDevices, createTable } from './generate-entities/devices.js';
 import { CustomersController } from './src/controllers/customers.js';
+import { LoginController } from './src/controllers/login.js';
 const customersController = new CustomersController();
+const loginController = new LoginController();
 loginForm.onsubmit = function (event) {
     return __awaiter(this, void 0, void 0, function* () {
         event.preventDefault();
         infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
         try {
-            yield login(emailInput, passwordInput, infoLabel);
+            yield loginController.login();
+            let token = loginController.getToken();
+            let refreshToken = loginController.getRefreshToken();
             console.log('token: ' + token);
             console.log('refreshToken: ' + refreshToken);
             yield customersController.importData(token);

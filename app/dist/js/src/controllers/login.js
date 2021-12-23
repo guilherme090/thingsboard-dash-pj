@@ -7,34 +7,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Customers } from '../models/customers.js';
-import { CustomersView } from '../views/customers.js';
-import { urlList, request } from '../../api.js';
-import { MessageView } from '../views/messages.js';
-export class CustomersController {
+import { ThingsBoardConnection } from "../models/thingsboard-connection.js";
+import { MessageView } from "../views/messages.js";
+export class LoginController {
     constructor() {
-        this.customers = new Customers();
-        this.customersView = new CustomersView('#customers-view');
+        this.connection = new ThingsBoardConnection();
         this.messageView = new MessageView('#message-view');
-        this.updateView('');
+        this.emailInput = document.querySelector('#auth-email');
+        this.passwordInput = document.querySelector('#auth-password');
+        this.updateView('Faça o login no ThingsBoard.');
     }
-    importData(token) {
+    login() {
         return __awaiter(this, void 0, void 0, function* () {
-            let customersList = yield request(urlList.customers, token);
-            if (customersList.data) {
-                this.customers.add(customersList.data);
-                this.updateView('');
+            try {
+                yield this.connection.login(this.emailInput.value, this.passwordInput.value);
             }
-            else {
-                throw Error('Não foi possível obter a lista de clientes.');
+            catch (error) {
+                console.error(error);
+                this.updateView('Não foi possível conectar-se ao ThingsBoard.');
+                return;
             }
+            this.updateView('Conectado ao ThingsBoard.');
         });
     }
+    getToken() {
+        return this.connection.token;
+    }
+    getRefreshToken() {
+        return this.connection.refreshToken;
+    }
     updateView(message) {
-        this.customersView.update(this.customers);
         if (message) {
             this.messageView.update(message);
         }
     }
 }
-//# sourceMappingURL=customers.js.map
+//# sourceMappingURL=login.js.map

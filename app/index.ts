@@ -3,17 +3,24 @@ const passwordInput: HTMLInputElement = document.querySelector('#auth-password')
 const loginForm: any = document.querySelector('#login-form');
 const infoLabel: HTMLInputElement = document.querySelector('#info');
 
-import { login, token, refreshToken } from './api.js'
+import { login } from './api.js'
 import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
 import { CustomersController } from './src/controllers/customers.js';
+import { LoginController } from './src/controllers/login.js';
 
 const customersController = new CustomersController(); 
+const loginController = new LoginController();
 
 loginForm.onsubmit = async function (event: Event) {
     event.preventDefault(); //otherwise the form is going to clear itself before submitting
     infoLabel.innerHTML = 'Tentando conectar-se ao ThingsBoard...';
-    try{    
-        await login(emailInput, passwordInput, infoLabel);
+    try{   
+        // await login(emailInput, passwordInput, infoLabel);
+        await loginController.login();
+
+        let token = loginController.getToken();
+        let refreshToken = loginController.getRefreshToken(); 
+
         console.log('token: ' + token);
         console.log('refreshToken: ' + refreshToken);
     
