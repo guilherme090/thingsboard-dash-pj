@@ -4,8 +4,10 @@ const loginForm: any = document.querySelector('#login-form');
 const infoLabel: HTMLInputElement = document.querySelector('#info');
 
 import { login, token, refreshToken } from './api.js'
-import { getCustomers, customerChart } from './generate-entities/customers.js';
 import { getDevices, deviceChart, createTable, tableArray } from './generate-entities/devices.js';
+import { CustomersController } from './src/controllers/customers.js';
+
+const customersController = new CustomersController(); 
 
 loginForm.onsubmit = async function (event: Event) {
     event.preventDefault(); //otherwise the form is going to clear itself before submitting
@@ -15,7 +17,9 @@ loginForm.onsubmit = async function (event: Event) {
         console.log('token: ' + token);
         console.log('refreshToken: ' + refreshToken);
     
-        await getCustomers(token, customerChart);
+        // await getCustomers(token, customerChart);
+        await customersController.importData(token);
+
         await getDevices(token);
         
         createTable();

@@ -12,8 +12,9 @@ const passwordInput = document.querySelector('#auth-password');
 const loginForm = document.querySelector('#login-form');
 const infoLabel = document.querySelector('#info');
 import { login, token, refreshToken } from './api.js';
-import { getCustomers, customerChart } from './generate-entities/customers.js';
 import { getDevices, createTable } from './generate-entities/devices.js';
+import { CustomersController } from './src/controllers/customers.js';
+const customersController = new CustomersController();
 loginForm.onsubmit = function (event) {
     return __awaiter(this, void 0, void 0, function* () {
         event.preventDefault();
@@ -22,7 +23,7 @@ loginForm.onsubmit = function (event) {
             yield login(emailInput, passwordInput, infoLabel);
             console.log('token: ' + token);
             console.log('refreshToken: ' + refreshToken);
-            yield getCustomers(token, customerChart);
+            yield customersController.importData(token);
             yield getDevices(token);
             createTable();
         }
