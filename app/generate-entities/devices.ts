@@ -1,13 +1,13 @@
 import { urlList, request } from '../api.js'; 
 import { userList, loadUsers } from './users.js';
 
-let allRelationsList = [];
-let deviceListArray = [];
-export let tableArray = [];
+let allRelationsList: Array<object> = [];
+let deviceListArray: Array<object> = [];
+export let tableArray: Array<object> = [];
 
-export const deviceChart = document.querySelector('#device-chart');
+export const deviceChart: HTMLTableElement = document.querySelector('#device-chart');
 
-export async function getDevices (token) {
+export async function getDevices (token: string) {
     tableArray = [];
 
     // Erase table to show it is loading...
@@ -26,7 +26,7 @@ export async function getDevices (token) {
         let relationsList = await request(urlList.generateRelationsUrl(device), token);
 
         // for each found relation, incorporate relation data to the allRelationsList. They will have to be removed afterwards
-        relationsList.forEach(relation => {allRelationsList.push(relation)});
+        relationsList.forEach(function(relation: object) {allRelationsList.push(relation)});
         let relatedUserId = '';
         let userName = '';
         let userId = '';
@@ -77,18 +77,21 @@ export function createTable(){
     let caption = deviceChart.createCaption();
     caption.innerHTML = 'Dispositivos e Usuários';
 
-    tableArray.forEach(tableItem => {
+    tableArray.forEach(function(tableItem: any) {
         // definition of row (contains device and assigned user)
         let tableRow = document.createElement('tr');
+        tableRow.setAttribute('class', 'table-light');
 
         // device column
         let deviceDiv = document.createElement('td');
+        deviceDiv.setAttribute('class', 'table-light');
         let deviceTxtNode = document.createTextNode(tableItem.deviceName);
         deviceDiv.setAttribute('class', 'device');
         deviceDiv.appendChild(deviceTxtNode);
 
         // user column
         let userDiv = document.createElement('td');
+        userDiv.setAttribute('class', 'table-light');
         let userTxtNode = document.createTextNode(tableItem.userName);
         userDiv.setAttribute('class', 'device');
         userDiv.appendChild(userTxtNode);
@@ -101,7 +104,7 @@ export function createTable(){
         newUserDiv.appendChild(optionDiv);
 
         // fill other positions with possible users
-        userList.forEach( userElement => {
+        userList.forEach( function(userElement: any) {
             let optionDiv = document.createElement('option');
             optionDiv.innerHTML = userElement.name;
             newUserDiv.appendChild(optionDiv);

@@ -3,15 +3,15 @@ export let urlList = {
     customers: `http://187.111.29.214:48080/api/customers?pageSize=100&page=0`,
     devices: `http://187.111.29.214:48080/api/user/devices?pageSize=100&page=0`,
     customerUsers: `http://187.111.29.214:48080/api/customer/users?pageSize=50&page=0`,
-    generateRelationsUrl: function(device) {
+    generateRelationsUrl: function(device: any) {
         return `http://187.111.29.214:48080/api/relations?toId=${device.id.id}&toType=DEVICE&relationType=Usa`;
     },
-    generateUsersUrl: function(user) {
+    generateUsersUrl: function(user: string) {
         return `http://187.111.29.214:48080/api/user/${user}`;
     }
 }
 
-export async function request (url){
+export async function request (url: string, token: string){
     try{
         let response = await fetch(url, {
             method: 'GET',
@@ -31,7 +31,7 @@ export async function request (url){
 export let token = '';
 export let refreshToken = '';
 
-export async function login (emailInput, passwordInput, infoLabel){
+export async function login (emailInput: HTMLInputElement, passwordInput: HTMLInputElement, infoLabel: Element){
         let response = await fetchWithTimeout(urlList.login, {
             timeout: 6000,
             method: 'POST',
@@ -58,8 +58,8 @@ export async function login (emailInput, passwordInput, infoLabel){
         refreshToken = json.refreshToken;
 }
 
-async function fetchWithTimeout(resource, options = {}){
-    const { timeout = 8000 } = options;
+async function fetchWithTimeout(resource: any, options = {}){
+    const { timeout = 8000 }: any = options;
 
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
