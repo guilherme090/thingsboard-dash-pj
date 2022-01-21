@@ -16,11 +16,11 @@ export class ThingsBoardConnection {
             customers: function () { return `http://187.111.29.214:48080/api/customers?pageSize=100&page=0`; },
             devices: function () { return `http://187.111.29.214:48080/api/user/devices?pageSize=100&page=0`; },
             customerUsers: function () { return `http://187.111.29.214:48080/api/customer/users?pageSize=50&page=0`; },
-            generateRelationsUrl: function (device) {
+            relations: function (device) {
                 return `http://187.111.29.214:48080/api/relations?toId=${device.id.id}&toType=DEVICE&relationType=Usa`;
             },
-            generateUsersUrl: function (user) {
-                return `http://187.111.29.214:48080/api/user/${user}`;
+            users: function (id) {
+                return `http://187.111.29.214:48080/api/user/${id}`;
             }
         };
     }
@@ -71,6 +71,18 @@ export class ThingsBoardConnection {
     }
     get refreshToken() {
         return this._refreshToken;
+    }
+    get customersList() {
+        return this.request(this._urlList.customers());
+    }
+    get devicesList() {
+        return this.request(this._urlList.devices());
+    }
+    get usersList() {
+        return this.request(this._urlList.customerUsers());
+    }
+    getRelations(device) {
+        return this.request(this._urlList.relations(device));
     }
 }
 function fetchWithTimeout(resource, options = {}) {

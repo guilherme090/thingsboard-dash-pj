@@ -7,14 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const emailInput = document.querySelector('#auth-email');
-const passwordInput = document.querySelector('#auth-password');
 const loginForm = document.querySelector('#login-form');
 const infoLabel = document.querySelector('#info');
-import { getDevices, createTable } from './generate-entities/devices.js';
-import { CustomersController } from './src/controllers/customers.js';
-import { LoginController } from './src/controllers/login.js';
-const customersController = new CustomersController();
+import { LoginController } from './src/controllers/thingsboard.js';
 const loginController = new LoginController();
 loginForm.onsubmit = function (event) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -26,9 +21,10 @@ loginForm.onsubmit = function (event) {
             let refreshToken = loginController.getRefreshToken();
             console.log('token: ' + token);
             console.log('refreshToken: ' + refreshToken);
-            yield customersController.importData(token);
-            yield getDevices(token);
-            createTable();
+            yield loginController.importCustomers();
+            yield loginController.importUsers();
+            yield loginController.importDevices();
+            yield loginController.importRelations();
         }
         catch (error) {
             if (error.name === 'AbortError') {
